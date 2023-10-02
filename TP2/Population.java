@@ -1,4 +1,5 @@
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.Random;
 
 public class Population {                      // DEFINITON  DE LA CLASSE POPULATION
@@ -131,22 +132,29 @@ public class Population {                      // DEFINITON  DE LA CLASSE POPULA
 
         Population newgen = new Population("generation mutation");
         Random rand1 = new Random() ;
-        int indice_mutation = rand1.nextInt(35) ;
-        Solution mutant = new Solution();
+        int indice_mutation = 0 ; 
+        
         
         for (int i = 0; i < List_Of_Solutions.length; i++) {
 
-            mutant = List_Of_Solutions[i] ;
-            mutant.bits[indice_mutation]=rand1.nextInt(2) ;
+            Solution mutant = new Solution();
+            mutant.updateSolution(Arrays.copyOf(List_Of_Solutions[i].bits, 35)) ;
+            mutant.bits[indice_mutation]= 1 -  mutant.bits[indice_mutation]  ; // ON INVERSE LE BITS SUBISSANT LA MUTATION 
+            mutant.updateSolution(mutant.bits);
+            System.out.print(List_Of_Solutions[i].fitness + "            " );
+            System.out.print(mutant.fitness + "        ");
+            
+              
 
-            if ( mutant.fitness.floatValue() >= List_Of_Solutions[i].fitness.floatValue()) {
+            if ( mutant.fitness.compareTo(List_Of_Solutions[i].fitness) == 1 ) {
                 
                 newgen.List_Of_Solutions[i].updateSolution(mutant.bits);
-                
+                System.out.println("HIGHER");
             } else {
                 
-                newgen.List_Of_Solutions[i].updateSolution(mutant.bits);
-            }    
+                newgen.List_Of_Solutions[i].updateSolution(Arrays.copyOf(List_Of_Solutions[i].bits, 35));
+                System.out.println("LOWER");
+            }
         }
         
         return newgen ;
