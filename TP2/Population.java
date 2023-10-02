@@ -1,11 +1,11 @@
 import java.math.BigInteger;
 import java.util.Random;
 
-public class Population {
+public class Population {                      // DEFINITON  DE LA CLASSE POPULATION
     public Solution[] List_Of_Solutions;
     public String name;
 
-    Population(String _name) {
+    Population(String _name) {                     // CONSTRUCTEUR 
         name = _name;
         List_Of_Solutions = new Solution[4];
         for (int i = 0; i < 4; i++) {
@@ -13,7 +13,7 @@ public class Population {
         }
     }
 
-    public void ShowPopulation() {
+    public void ShowPopulation() {                    // METHODE AFFICHAGE DE LA POPULATION
 
         System.out.println("Population  :  " + name);
 
@@ -26,7 +26,7 @@ public class Population {
 
     }
 
-    public Population Roulette() {
+    public Population Roulette() {                     // METHODE DE LA SELECTION PAR ROULETTE 
         Population newgen = new Population("generation roulette");
 
         BigInteger somme = new BigInteger("0");
@@ -68,7 +68,7 @@ public class Population {
 
     }
 
-    public Population Croisement() {
+    public Population Croisement() {                      // METHODE DE CROISEMENT 2 POINTS
 
         Population newgen = new Population("generation croisement");
 
@@ -127,7 +127,31 @@ public class Population {
 
     }
 
-    public void Mutation() {
+    public Population Mutation() {                   // METHODE DE MUTATION  1 BIT 
+
+        Population newgen = new Population("generation mutation");
+        Random rand1 = new Random() ;
+        int indice_mutation = rand1.nextInt(35) ;
+        Solution mutant = new Solution();
+        
+        for (int i = 0; i < List_Of_Solutions.length; i++) {
+
+            mutant = List_Of_Solutions[i] ;
+            mutant.bits[indice_mutation]=rand1.nextInt(2) ;
+
+            if ( mutant.fitness.floatValue() >= List_Of_Solutions[i].fitness.floatValue()) {
+                
+                newgen.List_Of_Solutions[i].updateSolution(mutant.bits);
+                
+            } else {
+                
+                newgen.List_Of_Solutions[i].updateSolution(mutant.bits);
+            }    
+        }
+        
+        return newgen ;
+
+
 
     }
 }

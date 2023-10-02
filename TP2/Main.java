@@ -5,7 +5,7 @@ public class Main {
 
         P1.ShowPopulation();
 
-        P1.Croisement().Croisement().Croisement().ShowPopulation();
+        P1.Mutation().ShowPopulation() ;
 
     }
 }
