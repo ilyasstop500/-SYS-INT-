@@ -8,8 +8,8 @@ public class Population {                      // DEFINITON  DE LA CLASSE POPULA
 
     Population(String _name) {                     // CONSTRUCTEUR 
         name = _name;
-        List_Of_Solutions = new Solution[4];
-        for (int i = 0; i < 4; i++) {
+        List_Of_Solutions = new Solution[20];
+        for (int i = 0; i < 20 ; i++) {
             List_Of_Solutions[i] = new Solution();
         }
     }
@@ -18,7 +18,7 @@ public class Population {                      // DEFINITON  DE LA CLASSE POPULA
 
         System.out.println("Population  :  " + name);
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 20; i++) {
 
             List_Of_Solutions[i].ShowSolution();
             System.out.println(' ');
@@ -32,22 +32,22 @@ public class Population {                      // DEFINITON  DE LA CLASSE POPULA
 
         BigInteger somme = new BigInteger("0");
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 20; i++) {
 
             somme = somme.add(List_Of_Solutions[i].fitness);
 
         }
 
-        float[] probas = new float[4];
+        float[] probas = new float[20];
 
-        for (var i = 0; i < 4; i++) {
+        for (var i = 0; i < 20; i++) {
 
             probas[i] = List_Of_Solutions[i].fitness.floatValue() / somme.floatValue();
             System.out.println(probas[i]);
 
         }
 
-        for (var indice_solution = 0; indice_solution < 4; indice_solution++) {
+        for (var indice_solution = 0; indice_solution < 20; indice_solution++) {
 
             // calcule de prob de chaque solution
 
@@ -55,9 +55,11 @@ public class Population {                      // DEFINITON  DE LA CLASSE POPULA
             float indice = j.nextFloat();
             System.out.println(indice);
             float repere = (float) 0.0;
-            for (var i = 0; i < 4; i++) {
+            for (var i = 0; i < 20; i++) {
                 if (repere < indice && indice < repere + probas[i]) {
                     newgen.List_Of_Solutions[indice_solution] = List_Of_Solutions[i];
+                    newgen.List_Of_Solutions[indice_solution].updateSolution(List_Of_Solutions[i].bits);
+                    
                 }
                 repere = repere + probas[i];
 
@@ -69,16 +71,14 @@ public class Population {                      // DEFINITON  DE LA CLASSE POPULA
 
     }
 
-    public Population Croisement() {                      // METHODE DE CROISEMENT 2 POINTS
+    public Population Croisement(int Point_de_croisment1 , int Point_de_croisment2) {                      // METHODE DE CROISEMENT 2 POINTS
 
         Population newgen = new Population("generation croisement");
 
-        Random randint = new Random();
-        Random randint2 = new Random();
-        int Point_de_croisment1 = randint.nextInt(35);
-        int Point_de_croisment2 = randint.nextInt(35);
+
+        Random randint = new Random() ;
         while (Point_de_croisment1 == Point_de_croisment2) {
-            Point_de_croisment2 = randint2.nextInt(35);
+            Point_de_croisment2 = randint.nextInt(35);
 
         }
 
@@ -89,7 +89,7 @@ public class Population {                      // DEFINITON  DE LA CLASSE POPULA
 
         }
 
-        System.out.println(Point_de_croisment1 + "   " + Point_de_croisment2);
+        // System.out.println(Point_de_croisment1 + "   " + Point_de_croisment2);
 
         for (int i = 0; i < List_Of_Solutions.length; i = i + 2) {
 
@@ -113,6 +113,7 @@ public class Population {                      // DEFINITON  DE LA CLASSE POPULA
             for (int j = Point_de_croisment2 + 1; j < 35; j++) {
 
                 enfant1.bits[j] = List_Of_Solutions[i].bits[j];
+                enfant1.bits[j] = List_Of_Solutions[i].bits[j] ;
                 enfant2.bits[j] = List_Of_Solutions[i + 1].bits[j];
 
             }
@@ -132,7 +133,7 @@ public class Population {                      // DEFINITON  DE LA CLASSE POPULA
 
         Population newgen = new Population("generation mutation");
         Random rand1 = new Random() ;
-        int indice_mutation = 0 ; 
+        int indice_mutation = rand1.nextInt(35) ; 
         
         
         for (int i = 0; i < List_Of_Solutions.length; i++) {
@@ -161,6 +162,42 @@ public class Population {                      // DEFINITON  DE LA CLASSE POPULA
 
 
 
+    }
+
+    public  Solution Trouver_max(String methode , int iteration) {
+
+        Solution SolutionMax = new Solution() ;
+ 
+
+        if (methode == "Croisement") {
+
+            Random randint1 = new Random();
+            Random randint2 = new Random();
+            int Point_de_croisment1 = randint1.nextInt(35);
+            int Point_de_croisment2 = randint2.nextInt(35);
+
+            BigInteger max = new BigInteger("0");
+            
+            for (var i = 0; i < iteration; i++) {
+                Croisement(Point_de_croisment1 , Point_de_croisment2) ;    
+                for (int index = 0; index < List_Of_Solutions.length; index++) {
+
+                    if (List_Of_Solutions[index].fitness.compareTo(max)==1) {
+    
+                    
+                        SolutionMax.updateSolution(Arrays.copyOf(List_Of_Solutions[index].bits,35));
+                        
+                        max = BigInteger.valueOf(List_Of_Solutions[index].fitness.longValue());
+                        SolutionMax.ShowSolution();
+                        System.out.println(max);
+                    
+                    } 
+                }            
+            }
+
+        }
+
+        return SolutionMax ;
     }
 }
 
