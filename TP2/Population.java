@@ -133,11 +133,12 @@ public class Population {                      // DEFINITON  DE LA CLASSE POPULA
 
         Population newgen = new Population("generation mutation");
         Random rand1 = new Random() ;
-        int indice_mutation = rand1.nextInt(35) ; 
+         
         
         
         for (int i = 0; i < List_Of_Solutions.length; i++) {
 
+            int indice_mutation = rand1.nextInt(35) ;
             Solution mutant = new Solution();
             mutant.updateSolution(Arrays.copyOf(List_Of_Solutions[i].bits, 35)) ;
             mutant.bits[indice_mutation]= 1 -  mutant.bits[indice_mutation]  ; // ON INVERSE LE BITS SUBISSANT LA MUTATION 
@@ -196,6 +197,65 @@ public class Population {                      // DEFINITON  DE LA CLASSE POPULA
             }
 
         }
+
+
+        if (methode == "Roulette") {
+            
+            BigInteger max = new BigInteger("0");
+
+            for (int i = 0; i < iteration ; i++) {
+                Roulette() ;
+            }
+            for (int index = 0; index < List_Of_Solutions.length; index++) {
+
+                if (List_Of_Solutions[index].fitness.compareTo(max)==1) {
+    
+                    
+                    SolutionMax.updateSolution(Arrays.copyOf(List_Of_Solutions[index].bits,35));
+                        
+                    max = BigInteger.valueOf(List_Of_Solutions[index].fitness.longValue());
+                    SolutionMax.ShowSolution();
+                    System.out.println(max);
+                    
+                } 
+           } 
+           
+           
+
+
+
+ 
+
+            
+        }
+
+
+        if (methode == "Mutation") {
+
+            BigInteger max = new BigInteger("0");
+
+            for (var i = 0; i < iteration; i++) {
+                Mutation() ;    
+                for (int index = 0; index < List_Of_Solutions.length; index++) {
+
+                    if (List_Of_Solutions[index].fitness.compareTo(max)==1) {
+    
+                    
+                        SolutionMax.updateSolution(Arrays.copyOf(List_Of_Solutions[index].bits,35));
+                        
+                        max = BigInteger.valueOf(List_Of_Solutions[index].fitness.longValue());
+                        SolutionMax.ShowSolution();
+                        System.out.println(max);
+                    
+                    } 
+                }            
+            }
+
+            
+
+            
+        }
+
 
         return SolutionMax ;
     }
