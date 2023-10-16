@@ -49,7 +49,7 @@ public class Population {                      // DEFINITON  DE LA CLASSE POPULA
 
         for (var indice_solution = 0; indice_solution < 20; indice_solution++) {
 
-            // calcule de prob de chaque solution
+            
 
             Random j = new Random();
             float indice = j.nextFloat();

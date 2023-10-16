@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import operateurs.selection.Selection_aleatoire;
 import operateurs.croisement.Croisement;
 import operateurs.croisement.Croisement_1point;
+import operateurs.croisement.Croisement_2points;
+import operateurs.croisement.Croisement_kpoints;
+import operateurs.mutation.Mutation;
+import operateurs.mutation.Mutation_npoints;
+import operateurs.selection.Roulette_biaisé;
 import operateurs.selection.Selection;
 import problemes.Probleme;
 import representation.Gene;
@@ -51,12 +56,15 @@ public class Algorithme_genetique {
 
 		Selection selection; 
 
-		//Mutation mutation = new BitFlip(probaMutation);
+		Mutation mutation ;
+		mutation = new Mutation_npoints(probaMutation);
+			
 		
+
 		for (int generation = 1; generation < nb_generations; generation++) {
 
 	
-			selection = new Selection_aleatoire(population); 
+			selection = new Roulette_biaisé(population); 
 
 
 			populationFille = new ArrayList<Solution>();
@@ -67,15 +75,15 @@ public class Algorithme_genetique {
 				Solution parent2 = selection.selectionner();
 
 				Croisement croisement; 
-				croisement = new Croisement_1point(parent1, parent2, probaCroisement);
+				croisement = new Croisement_kpoints(parent1, parent2, probaCroisement,4);
 				croisement.croiser();
 
 				Solution enfant1 = croisement.getEnfant1();
 				Solution enfant2 = croisement.getEnfant2();
 
 				// Mutation
-				//enfant1 = mutation.muter(enfant1);
-				//enfant2 = mutation.muter(enfant2);
+				enfant1 = mutation.muter(enfant1);
+				enfant2 = mutation.muter(enfant2);
 				//
 
 				probleme.evaluer(enfant1);

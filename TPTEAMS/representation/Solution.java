@@ -50,7 +50,7 @@ public class Solution {
 		this.f = f;
 	}
 
-	public Gene[] getChromosome() {
+	public  Gene[] getChromosome() {
 		return chromosome;
 	}
 

@@ -80,19 +80,77 @@ public class Echiquier {
 
     }
 
-    public int nbrReines() {
-        placerReine(0, 0);
+   
 
-        for (int i = 0; i < echiquier.length; i++) {
-            for (int j = 0; j < echiquier.length; j++) {
-                if (echiquier[i][j] == libre) {
-
-                }
-
+    public int nombreReinesGlouton() {
+        int nombreReines = 0;
+        while (true) {
+            Cellule meilleureCellule = trouverMeilleureCellule();
+            if (meilleureCellule == null) {
+                break;
             }
-
+            placerReine(meilleureCellule.getx(), meilleureCellule.gety());
+            nombreReines++;
         }
-
+        return nombreReines;
     }
 
+    private Cellule trouverMeilleureCellule() {
+        int minMenaces = Integer.MAX_VALUE;
+        Cellule meilleureCellule = null;
+
+        for (int x = 0; x < taille; x++) {
+            for (int y = 0; y < taille; y++) {
+                if (echiquier[x][y].getOcc() == libre) {
+                    int menacesEliminees = calculerMenacesEliminees(x, y);
+                    if (menacesEliminees < minMenaces) {
+                        minMenaces = menacesEliminees;
+                        meilleureCellule = echiquier[x][y];
+                    }
+                }
+            }
+        }
+
+        return meilleureCellule;
+    }
+
+
+
+    private int calculerMenacesEliminees(int x, int y) {
+        int menacesEliminees = 0;
+    
+        // Parcours des lignes et colonnes
+        for (int i = 0; i < taille; i++) {
+            if (echiquier[i][y].getOcc() == menacee) {
+                menacesEliminees++;
+            }
+            if (echiquier[x][i].getOcc() == menacee) {
+                menacesEliminees++;
+            }
+        }
+    
+        // Parcours des diagonales
+        for (int i = 1; i < taille; i++) {
+            if (x + i < taille && y + i < taille && echiquier[x + i][y + i].getOcc() == menacee) {
+                menacesEliminees++;
+            }
+            if (x - i >= 0 && y - i >= 0 && echiquier[x - i][y - i].getOcc() == menacee) {
+                menacesEliminees++;
+            }
+            if (x + i < taille && y - i >= 0 && echiquier[x + i][y - i].getOcc() == menacee) {
+                menacesEliminees++;
+            }
+            if (x - i >= 0 && y + i < taille && echiquier[x - i][y + i].getOcc() == menacee) {
+                menacesEliminees++;
+            }
+        }
+    
+        return menacesEliminees;
+    }
+    
 }
+
+
+    
+
+

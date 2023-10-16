@@ -15,6 +15,13 @@ public class Cellule {
         return x ;
     }
 
+    public void setx(int x) {
+        this.x = x ;
+
+    }
+
+
+
     public int gety () {
         return y ;
     }
@@ -24,10 +31,7 @@ public class Cellule {
     }
 
     
-    public void setx(int x) {
-        this.x = x ;
-
-    }
+    
 
     public void sety(int y) {
         this.y = y ; 

@@ -4,6 +4,7 @@ import problemes.ChaineBinaire;
 import problemes.Probleme;
 import representation.Solution;
 
+
 public class Main {
 
 	public static void main(String[] args) {
@@ -23,6 +24,11 @@ public class Main {
 		
 		System.out.println("Resultat: " + best);
 		
+		
+		
+		
 	}
+
+	
 
 }
